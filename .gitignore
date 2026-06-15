@@ -1,0 +1,16 @@
+# Godot 自動產生的快取，不需要 commit
+cat > .gitignore << 'EOF'
+.godot/
+
+# 匯出檔案
+*.import
+export.cfg
+export_preset.cfg
+
+# 二進位匯出（視需求決定是否排除）
+*.exe
+*.x86_64
+*.dmg
+
+# 編輯器本地設定（選擇性）
+.vscode/

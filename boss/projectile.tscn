@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://b8virp1jw6he8"]
+
+[ext_resource type="Script" uid="uid://cwgy60ev5r0m3" path="res://boss/projectile.gd" id="1_vju82"]
+[ext_resource type="Texture2D" uid="uid://bqai05vhcrrl5" path="res://sprites/boss/projectile.png" id="2_ii1mh"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_n0f0j"]
+
+[node name="Projectile" type="Area2D" unique_id=1183261307]
+collision_layer = 8
+script = ExtResource("1_vju82")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1747944130]
+rotation = 1.5707964
+texture = ExtResource("2_ii1mh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1462867959]
+shape = SubResource("CircleShape2D_n0f0j")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=346729271]

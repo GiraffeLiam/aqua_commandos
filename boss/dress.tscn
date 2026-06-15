@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://buj4xosm31rgq"]
+
+[ext_resource type="Script" uid="uid://c3lsueaimwv63" path="res://boss/dress.gd" id="1_m5fpl"]
+[ext_resource type="Texture2D" uid="uid://dip7phqao154w" path="res://sprites/boss/Sample 150x270-Copy-Copy (3).png" id="1_nu7v5"]
+
+[node name="Dress" type="Node2D" unique_id=1342251134]
+script = ExtResource("1_m5fpl")
+dress_texture = ExtResource("1_nu7v5")
+columns = 10
+rows = 12

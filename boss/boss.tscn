@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://b1ligesccfep6"]
+
+[ext_resource type="Script" uid="uid://ckj3v6amkt35s" path="res://boss/boss.gd" id="1_yy71b"]
+[ext_resource type="PackedScene" uid="uid://buj4xosm31rgq" path="res://boss/dress.tscn" id="2_270ai"]
+[ext_resource type="Texture2D" uid="uid://dxovbmyk8q6n6" path="res://sprites/boss/Sample 150x270-Copy-Copy (1).png" id="3_hcu6l"]
+[ext_resource type="PackedScene" uid="uid://b8virp1jw6he8" path="res://boss/projectile.tscn" id="4_270ai"]
+
+[node name="Boss" type="Node2D" unique_id=1268734241]
+script = ExtResource("1_yy71b")
+projectile_scene = ExtResource("4_270ai")
+
+[node name="BodySprite" type="Sprite2D" parent="." unique_id=289376683]
+texture = ExtResource("3_hcu6l")
+
+[node name="Dress" parent="." unique_id=1342251134 instance=ExtResource("2_270ai")]
+
+[node name="Projectile" parent="." unique_id=1183261307 instance=ExtResource("4_270ai")]
+position = Vector2(31, 26)

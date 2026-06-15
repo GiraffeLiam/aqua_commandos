@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://cme6yiprxv68h"]
+
+[ext_resource type="Texture2D" uid="uid://dya5mdukhihjp" path="res://sprites/charactor/idle.png" id="1_oul6g"]
+[ext_resource type="Script" uid="uid://b07vfl8ic5d0m" path="res://player/player.gd" id="1_rkbax"]
+[ext_resource type="Script" uid="uid://dpydsr0vbs141" path="res://player/weapon.gd" id="3_yw30f"]
+[ext_resource type="PackedScene" uid="uid://oesn66fqvgu7" path="res://player/bullet.tscn" id="4_g6k8r"]
+[ext_resource type="Texture2D" uid="uid://bre7fpnaoma4s" path="res://sprites/weapon/Glock - P80 [64x48].png" id="4_qjkh3"]
+[ext_resource type="Script" uid="uid://cy164ji4qcahi" path="res://player/invincibility.gd" id="6_g6k8r"]
+[ext_resource type="Script" uid="uid://b7l0rl22qai7i" path="res://player/shield_orb.gd" id="7_boad6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rkbax"]
+radius = 18.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g1dw6"]
+radius = 14.0
+
+[node name="Player" type="CharacterBody2D" unique_id=1545404637 groups=["player"]]
+collision_mask = 128
+script = ExtResource("1_rkbax")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=474583690]
+scale = Vector2(2, 2)
+texture = ExtResource("1_oul6g")
+hframes = 8
+vframes = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1459967107]
+shape = SubResource("CircleShape2D_rkbax")
+
+[node name="HurtBox" type="Area2D" parent="." unique_id=780993412]
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox" unique_id=125155135]
+shape = SubResource("CircleShape2D_g1dw6")
+
+[node name="Weapon" type="Node2D" parent="." unique_id=417030817]
+script = ExtResource("3_yw30f")
+bullet_scene = ExtResource("4_g6k8r")
+
+[node name="Sprite2D" type="Sprite2D" parent="Weapon" unique_id=64582885]
+position = Vector2(0, -2)
+texture = ExtResource("4_qjkh3")
+offset = Vector2(20, 6)
+
+[node name="BulletRoot" type="Node2D" parent="Weapon" unique_id=1774552739]
+position = Vector2(36, -8)
+
+[node name="Invincibility" type="Node2D" parent="." unique_id=1032865094]
+script = ExtResource("6_g6k8r")
+
+[node name="ShieldOrb" type="Node2D" parent="Invincibility" unique_id=405084260]
+script = ExtResource("7_boad6")
+orb_radius = 28.0

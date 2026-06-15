@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://bp56kl7xb8rvl"]
+
+[ext_resource type="Script" uid="uid://dbvog3i86o2oj" path="res://boss/dress_block.gd" id="1_ua67t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oerav"]
+size = Vector2(8, 8)
+
+[node name="DressBlock" type="Area2D" unique_id=950259838]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("1_ua67t")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=42559408]
+region_enabled = true
+region_rect = Rect2(0, 0, 152, 270)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=502366006]
+shape = SubResource("RectangleShape2D_oerav")

@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://txcovoq7w0ks"]
+
+[ext_resource type="Script" uid="uid://cesx13scdow2v" path="res://battle_field.gd" id="1_owq8t"]
+[ext_resource type="PackedScene" uid="uid://bvnjfmi205cpk" path="res://player.tscn" id="1_uv03f"]
+[ext_resource type="PackedScene" uid="uid://cywkb32tm345k" path="res://first_ground.tscn" id="2_owq8t"]
+[ext_resource type="PackedScene" uid="uid://li73yh1v301l" path="res://boss.tscn" id="3_uv03f"]
+[ext_resource type="PackedScene" uid="uid://m60u0a5hp5lv" path="res://ui.tscn" id="4_owq8t"]
+
+[node name="BattleField" type="Node2D" unique_id=552550668]
+script = ExtResource("1_owq8t")
+
+[node name="Game layer" type="Node2D" parent="." unique_id=1076813623]
+
+[node name="First ground" parent="Game layer" unique_id=627972510 instance=ExtResource("2_owq8t")]
+
+[node name="Player" parent="Game layer" unique_id=607941622 instance=ExtResource("1_uv03f")]
+position = Vector2(601, 541)
+
+[node name="Boss" parent="Game layer" unique_id=971764315 instance=ExtResource("3_uv03f")]
+position = Vector2(598, 205)
+
+[node name="UI" parent="." unique_id=1460220199 instance=ExtResource("4_owq8t")]
