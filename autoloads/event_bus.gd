@@ -13,3 +13,4 @@ signal boss_defeated
 # ── 階段 2 ──────────────────────────────────────────────────
 signal player_health_changed(current: int, maximum: int)
 signal screen_shake_requested(duration: float, strength: float)
+signal game_over(won: bool)
