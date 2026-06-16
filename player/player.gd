@@ -6,6 +6,7 @@ extends CharacterBody2D
 @export var max_hp: int = 3
 @export var hit_shake_time: float = 0.3
 @export var hit_shake_strength: float = 8.0
+@export var boss_push_strength: float = 60.0
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var hurt_box: Area2D = $HurtBox
@@ -15,6 +16,8 @@ extends CharacterBody2D
 var aim_direction: Vector2 = Vector2.RIGHT
 
 var _hp: int = 0
+
+const _BOSS_LAYER: int = 7  # 物理層 7 = boss
 
 
 func _ready() -> void:
@@ -28,6 +31,7 @@ func _physics_process(_delta: float) -> void:
 	var dir := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	velocity = dir * move_speed
 	move_and_slide()
+	_resolve_boss_contact()
 	_update_aim_direction()
 
 
@@ -36,6 +40,16 @@ func _update_aim_direction() -> void:
 	var mouse_dir := get_global_mouse_position() - global_position
 	if mouse_dir.length() > 1.0:
 		aim_direction = mouse_dir.normalized()
+
+
+# 撞到 Boss 時沿碰撞法線輕推離開（撞不進去由 collision_mask 擋；這裡只給「推開感」）
+func _resolve_boss_contact() -> void:
+	for i in get_slide_collision_count():
+		var collision := get_slide_collision(i)
+		var collider := collision.get_collider()
+		if collider is CollisionObject2D and (collider as CollisionObject2D).get_collision_layer_value(_BOSS_LAYER):
+			global_position += collision.get_normal() * boss_push_strength * get_physics_process_delta_time()
+			return
 
 
 func take_damage(amount: int) -> void:

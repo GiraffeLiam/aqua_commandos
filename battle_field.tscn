@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://txcovoq7w0ks"]
 
+[ext_resource type="Texture2D" uid="uid://12p8xgk8dkku" path="res://art asset/UntitledArtwork4 (5).png" id="1_owq8t"]
 [ext_resource type="PackedScene" uid="uid://cme6yiprxv68h" path="res://player/player.tscn" id="1_vim3v"]
 [ext_resource type="PackedScene" uid="uid://b1ligesccfep6" path="res://boss/boss.tscn" id="2_jgmvv"]
 [ext_resource type="PackedScene" uid="uid://d2ur34jbolhjp" path="res://ui/battle_ui.tscn" id="3_brqjc"]
@@ -7,12 +8,16 @@
 
 [node name="BattleField" type="Node2D" unique_id=85234362]
 
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1049571728]
+position = Vector2(65, 73)
+texture = ExtResource("1_owq8t")
+centered = false
+
 [node name="Player" parent="." unique_id=1545404637 instance=ExtResource("1_vim3v")]
 position = Vector2(558, 615)
 
 [node name="Boss" parent="." unique_id=1268734241 instance=ExtResource("2_jgmvv")]
 position = Vector2(557, 289)
-fire_rate = 0.3
 
 [node name="BattleUI" parent="." unique_id=1550368545 instance=ExtResource("3_brqjc")]
 

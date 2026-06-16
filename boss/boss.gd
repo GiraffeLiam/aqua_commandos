@@ -1,37 +1,31 @@
 # res://boss/boss.gd
-# Boss — Boss 實體根節點。身體 Sprite ＋ 外層 Dress 的容器。
-# 多階段時這裡會掛多套 Dress（一層一個 phase），每階段只開放當前層可攻擊。
-# 目前為驗證用的「笨發射」：定時朝玩家當下位置射一發 Projectile，發射瞬間鎖定角度。
-# 階段 3 會把發射收進狀態機（移動、Projectile、衝撞）。
+# Boss — Boss 實體根節點，FSM 的「上下文」。
+# 提供座標 / 玩家查詢 / 發射 helper 給各 State 呼叫；本身不決定要做哪個動作。
+# 動作的決策與執行在 BossFSM ＋ 各 BossState（節點式狀態機）。
+# 階段 3 片 1：移除舊「笨發射」，改由 FSM 驅動。
 class_name Boss
 extends Node2D
 
 @export var projectile_scene: PackedScene
-@export var fire_rate: float = 1.5
 
-var _fire_timer: float = 0.0
-
-
-func _process(_delta: float) -> void:
-	_fire_timer -= _delta
-	if _fire_timer <= 0.0:
-		_fire_timer = fire_rate
-		_fire_at_player()
+@onready var _muzzle: Marker2D = $Muzzle
 
 
-func _fire_at_player() -> void:
+# ── 上下文 API：給 State 使用 ──────────────────────────────
+func get_muzzle_position() -> Vector2:
+	return _muzzle.global_position if _muzzle else global_position
+
+
+func get_player() -> Node2D:
+	return get_tree().get_first_node_in_group("player") as Node2D
+
+
+# 朝指定方向從槍口發一發 Projectile（方向發射瞬間鎖定，不追蹤）
+func fire_projectile(direction: Vector2) -> void:
 	if not projectile_scene:
 		push_error("Boss: projectile_scene 未設定，請在 Inspector 拖入 projectile.tscn")
 		return
-
-	var player := get_tree().get_first_node_in_group("player") as Node2D
-	if not player:
-		return
-
-	# 發射瞬間瞄準玩家當下位置，算一次方向就鎖定（不追蹤）
-	var direction: Vector2 = (player.global_position - global_position).normalized()
-
 	var projectile := projectile_scene.instantiate() as Projectile
-	projectile.global_position = global_position
+	projectile.global_position = get_muzzle_position()
 	projectile.init(direction)
 	get_tree().current_scene.add_child(projectile)
