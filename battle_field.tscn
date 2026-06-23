@@ -17,6 +17,7 @@ centered = false
 position = Vector2(558, 615)
 
 [node name="Boss" parent="." unique_id=1268734241 instance=ExtResource("2_jgmvv")]
+z_index = 1
 position = Vector2(557, 289)
 
 [node name="BattleUI" parent="." unique_id=1550368545 instance=ExtResource("3_brqjc")]

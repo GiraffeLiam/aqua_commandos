@@ -5,11 +5,14 @@ extends Node2D
 @export var dress_texture: Texture2D
 @export var columns: int = 5
 @export var rows: int = 6
+@export var shatter_effect_scene: PackedScene
 
 const ALPHA_THRESHOLD: int = 10
 
 var _alive_count: int = 0
 var _total_count: int = 0
+# 每塊 block 對應的 region（破碎特效要用該塊貼圖當素材；block 銷毀前查表取得）
+var _block_regions: Dictionary = {}
 
 
 func _ready() -> void:
@@ -58,6 +61,9 @@ func _build_blocks() -> void:
 
 			block.init(dress_texture, region, block_size, _on_block_destroyed)
 
+			# 保存該塊 region，破碎特效時查表（不持有 block 參照）
+			_block_regions[block] = region
+
 			_alive_count += 1
 
 	_total_count = _alive_count
@@ -84,7 +90,11 @@ func _is_region_transparent(image: Image, region: Rect2) -> bool:
 
 	return (total / count) < ALPHA_THRESHOLD
 
-func _on_block_destroyed(_block: DressBlock) -> void:
+func _on_block_destroyed(block: DressBlock) -> void:
+	# 在 block queue_free 前，於其世界座標生破碎特效（碎片＝該塊貼圖）
+	_spawn_shatter(block)
+	_block_regions.erase(block)
+
 	_alive_count -= 1
 	event_bus.dress_progress_changed.emit(get_alive_pct())
 
@@ -92,7 +102,42 @@ func _on_block_destroyed(_block: DressBlock) -> void:
 		print("dress_phase_cleared emitted")
 		event_bus.dress_phase_cleared.emit()
 
+
+# 於被擊破 block 的世界座標噴出該塊貼圖的碎片，掛到 Effects 容器（不隨 boss 移動）。
+func _spawn_shatter(block: DressBlock) -> void:
+	if not shatter_effect_scene:
+		return
+	var region: Rect2 = _block_regions.get(block, Rect2())
+	if region.size == Vector2.ZERO:
+		return
+
+	var effect := shatter_effect_scene.instantiate() as ShatterEffect
+	var effects_layer := get_parent().get_node_or_null("Effects")
+	if effects_layer:
+		effects_layer.add_child(effect)
+	else:
+		push_warning("Dress: 找不到 Effects 容器，破碎特效改掛場景根節點")
+		get_tree().current_scene.add_child(effect)
+
+	effect.global_position = block.global_position
+	effect.setup(dress_texture, region)
+
 func get_alive_pct() -> float:
 	if _total_count <= 0:
 		return 0.0
 	return float(_alive_count) / float(_total_count)
+	
+# 供 GhostTrail 取殘影所需的存活塊視覺資料（座標相對 Boss）。
+# 不回傳 block 參照本身，只回傳重建純 Sprite2D 所需的 region / 位置 / 當前 alpha。
+# position 相對 Boss = dress.position（相對 Boss）＋ block.position（相對 dress）。
+func get_snapshot_data() -> Array:
+	var data: Array = []
+	for block in _block_regions:
+		if not is_instance_valid(block):
+			continue
+		data.append({
+			"region": _block_regions[block],
+			"position": position + block.position,
+			"alpha": block.modulate.a,
+		})
+	return data

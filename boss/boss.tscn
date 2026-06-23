@@ -4,9 +4,12 @@
 [ext_resource type="PackedScene" uid="uid://buj4xosm31rgq" path="res://boss/dress.tscn" id="2_270ai"]
 [ext_resource type="Texture2D" uid="uid://dxovbmyk8q6n6" path="res://sprites/boss/Sample 150x270-Copy-Copy (1).png" id="3_hcu6l"]
 [ext_resource type="PackedScene" uid="uid://b8virp1jw6he8" path="res://boss/projectile.tscn" id="4_270ai"]
+[ext_resource type="Texture2D" uid="uid://c4xado7dpgqra" path="res://sprites/boss/Sample 150x270-Copy-Copy (2).png" id="4_naudl"]
+[ext_resource type="PackedScene" uid="uid://c7wpc6nvvvacg" path="res://boss/shatter_effect.tscn" id="5_205ta"]
 [ext_resource type="Script" uid="uid://cv2mjjgxg1yq7" path="res://boss/boss_fsm.gd" id="5_hcu6l"]
 [ext_resource type="Script" uid="uid://byf107t84h2jm" path="res://boss/states/sway_state.gd" id="6_ti23b"]
 [ext_resource type="Script" uid="uid://cglfhp2f7s0w6" path="res://boss/states/barrage_state.gd" id="7_glpsb"]
+[ext_resource type="Script" uid="uid://dbs407clm6c5" path="res://boss/ghost_trail.gd" id="9_3bina"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_270ai"]
 radius = 29.0
@@ -15,9 +18,15 @@ height = 212.0
 [node name="Boss" type="Node2D" unique_id=1268734241]
 script = ExtResource("1_yy71b")
 projectile_scene = ExtResource("4_270ai")
+stroll_amp_x = 40.0
+stroll_amp_y = 20.0
+stroll_speed = 2.0
 
 [node name="BodySprite" type="Sprite2D" parent="." unique_id=289376683]
 texture = ExtResource("3_hcu6l")
+
+[node name="Sample150x270CopyCopy(2)" type="Sprite2D" parent="." unique_id=1993025913]
+texture = ExtResource("4_naudl")
 
 [node name="Body" type="AnimatableBody2D" parent="." unique_id=1891736823]
 collision_layer = 64
@@ -32,9 +41,11 @@ position = Vector2(0, 72)
 scale = Vector2(-7.3841405, 430.70563)
 
 [node name="Dress" parent="." unique_id=1342251134 instance=ExtResource("2_270ai")]
+shatter_effect_scene = ExtResource("5_205ta")
 
 [node name="BossFSM" type="Node" parent="." unique_id=1463459498]
 script = ExtResource("5_hcu6l")
+decide_cooldown = 1.5
 
 [node name="SwayState" type="Node" parent="BossFSM" unique_id=577203154]
 script = ExtResource("6_ti23b")
@@ -49,3 +60,8 @@ script = ExtResource("7_glpsb")
 target_mode = 1
 lane_count = 5
 wave_count = 5
+
+[node name="Effects" type="Node2D" parent="." unique_id=919545147]
+
+[node name="GhostTrail" type="Node2D" parent="." unique_id=1766522090]
+script = ExtResource("9_3bina")

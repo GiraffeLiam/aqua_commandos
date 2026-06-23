@@ -17,6 +17,7 @@ func _ready() -> void:
 	_boss = get_parent() as Boss
 	if not _boss:
 		push_error("BossFSM: 父節點不是 Boss，請確認場景結構")
+		set_process(false)
 		return
 
 	for child in get_children():
@@ -28,22 +29,24 @@ func _ready() -> void:
 
 	if _states.is_empty():
 		push_error("BossFSM: 底下沒有任何 BossState 子節點")
+		set_process(false)
 		return
 
 	# 開場先進決策冷卻，冷卻結束後挑第一個動作
 	_enter_decide()
 
 
+# REPLACE func _process(delta)
 func _process(delta: float) -> void:
 	if _current:
 		_current.update(delta)
 		return
 
-	# 決策冷卻中
+	# 決策冷卻中：以散步（細微 8 字漂移）取代僵直待機
+	_boss.stroll_step(delta)
 	_decide_timer -= delta
 	if _decide_timer <= 0.0:
 		_decide_next()
-
 
 func _on_state_finished() -> void:
 	if _current:

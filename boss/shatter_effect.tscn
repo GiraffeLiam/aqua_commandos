@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://c7wpc6nvvvacg"]
+
+[ext_resource type="Script" uid="uid://djo41c35xagt6" path="res://boss/shatter_effect.gd" id="1_q6r1w"]
+
+[node name="shatter_effect" type="CPUParticles2D" unique_id=2019655641]
+script = ExtResource("1_q6r1w")
+fragment_amount = 15
+lifetime_seconds = 1.0
