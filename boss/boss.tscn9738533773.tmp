@@ -6,12 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://c4xado7dpgqra" path="res://sprites/boss/Sample 150x270-Copy-Copy (2).png" id="4_naudl"]
 [ext_resource type="PackedScene" uid="uid://c7wpc6nvvvacg" path="res://boss/shatter_effect.tscn" id="5_205ta"]
 [ext_resource type="Script" uid="uid://cv2mjjgxg1yq7" path="res://boss/boss_fsm.gd" id="5_hcu6l"]
-[ext_resource type="Script" uid="uid://byf107t84h2jm" path="res://boss/states/sway_state.gd" id="6_ti23b"]
-[ext_resource type="PackedScene" uid="uid://ck6f4ppeof3hx" path="res://boss/release_point.tscn" id="8_3bina"]
-[ext_resource type="Script" uid="uid://eml3y5wymj02" path="res://boss/states/barrage_follow_state.gd" id="8_6w25r"]
 [ext_resource type="Script" uid="uid://dbs407clm6c5" path="res://boss/ghost_trail.gd" id="9_3bina"]
-[ext_resource type="Script" uid="uid://ckjfwqb6b5wpt" path="res://boss/states/barrage_fixed_state.gd" id="10_yerig"]
-[ext_resource type="Script" uid="uid://cx46qsei18l5f" path="res://boss/states/barrage_world_track_state.gd" id="11_yerig"]
+[ext_resource type="Script" uid="uid://wj16dr2xieoe" path="res://boss/states/test_barrage_state.gd" id="9_naudl"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_270ai"]
 radius = 29.0
@@ -37,6 +33,10 @@ collision_mask = 0
 position = Vector2(0, 7)
 shape = SubResource("CapsuleShape2D_270ai")
 
+[node name="Muzzle" type="Marker2D" parent="." unique_id=129471522]
+position = Vector2(0, 72)
+scale = Vector2(-7.3841405, 430.70563)
+
 [node name="Dress" parent="." unique_id=1342251134 instance=ExtResource("2_270ai")]
 shatter_effect_scene = ExtResource("5_205ta")
 
@@ -45,19 +45,13 @@ script = ExtResource("5_hcu6l")
 decide_cooldown = 1.5
 
 [node name="SwayState" type="Node" parent="BossFSM" unique_id=577203154]
-script = ExtResource("6_ti23b")
 
 [node name="BarrageFollow" type="Node" parent="BossFSM" unique_id=2000174789]
-script = ExtResource("8_6w25r")
-release_point_scene = ExtResource("8_3bina")
 
 [node name="BarrageFixed" type="Node" parent="BossFSM" unique_id=1600162185]
-script = ExtResource("10_yerig")
-release_point_scene = ExtResource("8_3bina")
 
-[node name="BarrageWorldTrack" type="Node" parent="BossFSM" unique_id=211590931]
-script = ExtResource("11_yerig")
-release_point_scene = ExtResource("8_3bina")
+[node name="test_barrage_state" type="Node2D" parent="BossFSM" unique_id=702912988]
+script = ExtResource("9_naudl")
 
 [node name="Effects" type="Node2D" parent="." unique_id=919545147]
 

@@ -101,6 +101,7 @@ grow_vertical = 2
 layout_mode = 2
 
 [node name="GameMenu" type="Control" parent="." unique_id=1353705780]
+visible = false
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5

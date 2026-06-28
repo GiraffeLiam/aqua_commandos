@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://ck6f4ppeof3hx"]
+
+[ext_resource type="Script" uid="uid://b3vnm0qv3v2ou" path="res://boss/release_point.gd" id="1_j60kh"]
+[ext_resource type="PackedScene" uid="uid://b8virp1jw6he8" path="res://boss/projectile.tscn" id="2_whu0i"]
+
+[node name="ReleasePoint" type="Node2D" unique_id=1689875447]
+script = ExtResource("1_j60kh")
+projectile_scene = ExtResource("2_whu0i")
