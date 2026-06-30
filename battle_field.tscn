@@ -15,6 +15,7 @@ centered = false
 
 [node name="Player" parent="." unique_id=1545404637 instance=ExtResource("1_vim3v")]
 position = Vector2(558, 615)
+max_hp = 7
 
 [node name="Boss" parent="." unique_id=1268734241 instance=ExtResource("2_jgmvv")]
 z_index = 1

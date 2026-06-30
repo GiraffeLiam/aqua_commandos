@@ -127,6 +127,10 @@ func get_alive_pct() -> float:
 		return 0.0
 	return float(_alive_count) / float(_total_count)
 	
+# 已破壞比例（0.0 = 完整，1.0 = 全毀）。疲憊 state 用此算權重。
+func get_destruction_pct() -> float:
+	return 1.0 - get_alive_pct()
+	
 # 供 GhostTrail 取殘影所需的存活塊視覺資料（座標相對 Boss）。
 # 不回傳 block 參照本身，只回傳重建純 Sprite2D 所需的 region / 位置 / 當前 alpha。
 # position 相對 Boss = dress.position（相對 Boss）＋ block.position（相對 dress）。

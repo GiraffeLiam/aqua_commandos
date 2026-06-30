@@ -6,12 +6,13 @@ class_name BossFSM
 extends Node
 
 @export var decide_cooldown: float = 0.3
+@export var repeat_weight_factor: float = 0.3  # 上一個動作的權重打折（避免連續重複；1.0=關閉）
 
 var _boss: Boss
 var _states: Array[BossState] = []
 var _current: BossState = null
 var _decide_timer: float = 0.0
-
+var _last_state: BossState = null   # 上一個執行過的動作（加權時打折）
 
 func _ready() -> void:
 	_boss = get_parent() as Boss
@@ -67,6 +68,7 @@ func _decide_next() -> void:
 		# 沒有可選動作，再等一個冷卻
 		_decide_timer = decide_cooldown
 		return
+	_last_state = next   # 記錄這次選的，下次對它打折
 	_current = next
 	_current.enter()
 
@@ -79,16 +81,25 @@ func _pick_reactive() -> BossState:
 
 # 第二層：加權隨機
 func _pick_weighted() -> BossState:
+	# 上一個動作的權重打折（不那麼具體地避免連續重複）
 	var total: float = 0.0
 	for state in _states:
-		total += maxf(state.get_weight(), 0.0)
+		total += _effective_weight(state)
 	if total <= 0.0:
 		return null
 
 	var roll: float = randf() * total
 	var acc: float = 0.0
 	for state in _states:
-		acc += maxf(state.get_weight(), 0.0)
+		acc += _effective_weight(state)
 		if roll <= acc:
 			return state
 	return _states.back()
+
+
+# 有效權重 = state 自報權重（疲憊會動態變）× 是否為上一個動作的折扣
+func _effective_weight(state: BossState) -> float:
+	var w: float = maxf(state.get_weight(), 0.0)
+	if state == _last_state:
+		w *= repeat_weight_factor
+	return w

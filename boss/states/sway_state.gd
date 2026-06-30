@@ -16,7 +16,9 @@ func enter() -> void:
 	boss.start_ghost_trail()
 
 	var dir: float = -1.0 if randf() < 0.5 else 1.0  # 50% 先左 / 先右
-	var start: Vector2 = boss.position
+	# 回歸點用散步軸心，而非當前漂移位置 → 晃動結束精確回到軸心、不累積漂移。
+	# （副作用：散步漂移中觸發晃動會有極小瞬移到軸心，幅度小、被快速晃動蓋過，多半不可見。）
+	var start: Vector2 = boss.get_stroll_home()
 	var offset := Vector2(move_distance * dir, 0.0)
 
 	_tween = boss.create_tween()
@@ -26,7 +28,6 @@ func enter() -> void:
 	_tween.tween_property(boss, "position", start + offset, half_duration)
 	_tween.tween_property(boss, "position", start, half_duration)
 	_tween.finished.connect(_on_tween_finished)
-
 
 func _on_tween_finished() -> void:
 	boss.stop_ghost_trail()
